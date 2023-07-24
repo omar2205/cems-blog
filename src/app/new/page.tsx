@@ -2,8 +2,8 @@
 
 import Link from 'next/link'
 import { FormEvent, useState } from 'react'
-import { useSession } from 'next-auth/react'
-import axios from 'axios'
+import { signOut, useSession } from 'next-auth/react'
+import axios, { AxiosError } from 'axios'
 
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -33,6 +33,11 @@ export default function Home() {
       if (status === 201) location.href = '/'
       setIsLoading(false)
     } catch (error) {
+      const err = error as AxiosError
+      if (err.status === 401) {
+        signOut()
+        location.href = '/'
+      }
       console.log(error)
       setIsLoading(false)
     }
