@@ -1,24 +1,27 @@
-import { BackendService } from "@/services/Backend"
-import { Author, Post } from "@/types/backend"
-import EditPostButton from './EditPostButton'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/lib/auth'
+import { BackendService } from '@/services/Backend'
+
+import PostForm from './Form'
+import { redirect } from 'next/navigation'
+
+export const revalidate = 0
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const { data: post, status } = await BackendService
-    .get<Post>(`/blog/${params.id}`)
+  const session = await getServerSession(authOptions)
+  const { data: post } = await BackendService.get('/blog/' + params.id)
 
-  if (status !== 200) return <h1>Error getting posts...</h1>
+  if (!session) redirect('/')
 
   return (
-    <div className="max-w-2xl mx-auto flex flex-col px-4">
-      <header className="mt-8">
-        <h2 className="font-medium text-3xl">{post.title}</h2>
-        <p className="opacity-60">by {(post.author as Author).username}</p>
-        <EditPostButton id={params.id}/>
-      </header>
-      <hr />
-      <div className="my-4">
-        {post.content}
+    <>
+      <main className="h-[5rem] flex flex-col justify-center items-center shadow">
+        <h1>Edit: {post.title}</h1>
+      </main>
+
+      <div className="max-w-2xl mx-auto mt-4 px-4">
+        <PostForm id={params.id} session={session} post={post} />
       </div>
-    </div>
+    </>
   )
 }
