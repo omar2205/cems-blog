@@ -3,7 +3,7 @@
 import { useSession } from "next-auth/react"
 import Link from "next/link"
 
-export default function NewPostLink(props: { id: string }) {
+export default function EditPostLink(props: { id: string }) {
   const { data } = useSession()
 
   if (data) {

@@ -2,6 +2,7 @@ import { BackendService } from "@/services/Backend"
 import { Author, Post } from "@/types/backend"
 import EditPostButton from './EditPostButton'
 import { Metadata } from "next"
+import DeletePost from "./DeletePost"
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
   const { data: post } = await BackendService.get('/blog/' + params.id)
@@ -22,7 +23,10 @@ export default async function Page({ params }: { params: { id: string } }) {
       <header className="mt-8">
         <h2 className="font-medium text-3xl">{post.title}</h2>
         <p className="opacity-60">by {(post.author as Author).username}</p>
-        <EditPostButton id={params.id}/>
+        <div className="flex justify-between">
+          <EditPostButton id={params.id} />
+          <DeletePost id={params.id} />
+        </div>
       </header>
       <hr />
       <div className="my-4">
