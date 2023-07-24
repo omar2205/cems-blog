@@ -15,7 +15,7 @@ export default async function Home() {
 
     return (
       <>
-        <main className="h-[5rem] flex flex-col justify-center items-center shadow">
+        <main className="h-[7rem] flex flex-col justify-center items-center shadow">
           <h1>Welcome to my Blog</h1>
           <NewPostLink />
         </main>
