@@ -1,5 +1,6 @@
 import { BackendService } from "@/services/Backend"
 import { Post } from "@/types/backend"
+import { signIn } from "next-auth/react"
 import Link from "next/link"
 
 export const revalidate = 0
@@ -8,6 +9,8 @@ export default async function Home() {
   const {data: posts, status} = await BackendService.get<Post[]>('/blog')
 
   if (status !== 200) return <h1>Error getting posts...</h1>
+
+  const l = () => signIn()
 
   return (
     <>
