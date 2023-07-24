@@ -1,9 +1,12 @@
+import { BACKEND_URL } from "@/constants"
 import { Post } from "@/types/backend"
+import Link from "next/link"
+
 
 export const revalidate = 0
 
 export default async function Home() {
-  const posts = await fetch('http://localhost:3001/blog').then(r => r.json()) as Post[]
+  const posts = await fetch(`${BACKEND_URL}/blog`).then(r => r.json()) as Post[]
 
   return (
     <>
@@ -15,12 +18,12 @@ export default async function Home() {
         <h2>My latest posts</h2>
         <div className="flex flex-col gap-4 mt-4">
           {posts.map((post: any) => {
-            return <a key={post._id}
+            return <Link key={post._id}
               className="shadow hover:shadow-md p-4 rounded"
               href={"/post/" + post._id}
             >
               <h3>{post.title}</h3>
-            </a>
+            </Link>
           })}
         </div>
       </div>
