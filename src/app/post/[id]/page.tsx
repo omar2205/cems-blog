@@ -1,6 +1,15 @@
 import { BackendService } from "@/services/Backend"
 import { Author, Post } from "@/types/backend"
 import EditPostButton from './EditPostButton'
+import { Metadata } from "next"
+
+export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+  const { data: post } = await BackendService.get('/blog/' + params.id)
+  return {
+    title: post.title,
+    description: post.content,
+  }
+}
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { data: post, status } = await BackendService
