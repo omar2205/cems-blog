@@ -1,7 +1,7 @@
 import { BackendService } from "@/services/Backend"
 import { Post } from "@/types/backend"
-import { signIn } from "next-auth/react"
 import Link from "next/link"
+import NewPostLink from "./NewPostButton"
 
 export const revalidate = 0
 
@@ -10,15 +10,14 @@ export default async function Home() {
 
   if (status !== 200) return <h1>Error getting posts...</h1>
 
-  const l = () => signIn()
-
   return (
     <>
-      <main className="h-[5rem] flex justify-center items-center shadow">
+      <main className="h-[5rem] flex flex-col justify-center items-center shadow">
         <h1>Welcome to my Blog</h1>
+        <NewPostLink />
       </main>
 
-      <div className="max-w-2xl mx-auto mt-4">
+      <div className="max-w-2xl mx-auto mt-4 px-4">
         <h2>My latest posts</h2>
         <div className="flex flex-col gap-4 mt-4">
           {posts.map((post: any) => {
