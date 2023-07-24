@@ -1,12 +1,13 @@
-import { BACKEND_URL } from "@/constants"
+import { BackendService } from "@/services/Backend"
 import { Post } from "@/types/backend"
 import Link from "next/link"
-
 
 export const revalidate = 0
 
 export default async function Home() {
-  const posts = await fetch(`${BACKEND_URL}/blog`).then(r => r.json()) as Post[]
+  const {data: posts, status} = await BackendService.get<Post[]>('/blog')
+
+  if (status !== 200) return <h1>Error getting posts...</h1>
 
   return (
     <>
