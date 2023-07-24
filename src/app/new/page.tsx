@@ -21,16 +21,21 @@ export default function Home() {
 
     const fd = new FormData(e.currentTarget)
     const body = Object.fromEntries(fd)
-    const { status } = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blog`, {
-      ...body
-    }, {
-      headers: {
-        'Authorization': `Bearer ${session?.user.accessToken}`
-      }
-    })
+    try {
+      const { status } = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/blog`, {
+        ...body
+      }, {
+        headers: {
+          'Authorization': `Bearer ${session?.user.accessToken}`
+        }
+      })
 
-    if (status === 201) location.href = '/'
-    setIsLoading(false)
+      if (status === 201) location.href = '/'
+      setIsLoading(false)
+    } catch (error) {
+      console.log(error)
+      setIsLoading(false)
+    }
   }
 
   return (
